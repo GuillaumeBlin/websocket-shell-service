@@ -1,43 +1,22 @@
-const WebSocket = require('ws')
-const os = require('os')
-const pty = require('node-pty')
+#!/usr/bin/env node
+const yargs = require('yargs')
 
-const DEFAULT_SHELL = os.platform() === 'win32' ? 'cmd.exe' : 'login'
+var argv = yargs
+        .usage('Usage: $0 [options]')
+        .option('port',{
+	    default: 8080,
+	    description : 'Port'
+	})
+	.option('ssl', {
+            default: true,
+            description: 'SSL by default. Use --no-ssl if unsecured wanted.'
+        })
+        .implies('ssl', 'ssl_cert')
+        .implies('ssl_cert', 'ssl_key') // only this one gets implied
+        .option('ssl_key', {default:null, description:'filepath to ssl key'})
+        .option('ssl_cert', {default:null, description:'filepath to ssl certificate'})
+        .help()
+        .alias('h', 'help')
+        .argv;
 
-module.exports =
-
-class WebsocketShellServer {
-  constructor ({ shell = DEFAULT_SHELL, server }) {
-    if (!server) throw new TypeError('Missing http server parameter')
-    const wss = new WebSocket.Server({
-      server
-    })
-
-    wss.on('connection', (connection) => {
-      const ptyProcess = pty.spawn(shell, [], {
-        cwd: process.env.HOME,
-        env: process.env
-      })
-
-      ptyProcess.on('data', (data) => {
-        connection.send(data)
-      })
-
-      connection.on('message', (message) => {
-        ptyProcess.write(message)
-      })
-
-      ptyProcess.once('close', () => {
-        connection.removeAllListeners()
-        connection.close()
-      })
-
-      connection.once('close', () => {
-        ptyProcess.removeAllListeners()
-        ptyProcess.destroy()
-      })
-    })
-
-    this.wss = wss
-  }
-}
+require('./run')(argv.port, argv.ssl, argv.ssl_key, argv.ssl_cert)
