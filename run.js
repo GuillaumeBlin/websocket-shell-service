@@ -1,10 +1,17 @@
+const fs = require('fs');
+const https = require('https')
 const http = require('http')
 
-const WebsocketShellServer = require('./')
+const WebsocketShellServer = require('./ws')
 
-module.exports = ({ port }) => {
-  const server = http.createServer()
-
+module.exports = function( port, ssl, ssl_key, ssl_cert) {
+ var server = http.createServer()
+  if(ssl){
+    server = https.createServer({
+      cert: fs.readFileSync(ssl_cert, 'utf8'),
+      key: fs.readFileSync(ssl_key, 'utf8')
+    })
+ }
   const shellServer = new WebsocketShellServer({
     server
   })
