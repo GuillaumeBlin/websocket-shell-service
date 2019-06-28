@@ -1,24 +1,29 @@
-# websocket-shell-service
-Create an SSH-like service which lets clients open shells through websockets
+# secured-websocket-shell
+standalone and secured version of websocket-shell-service project
+Create an SSH-like server which lets clients open shells through websockets
 
 ```
-npm install -g websocket-shell-service
+# in the cloned directory launch the following command 
+npm link
 
-# Start the service on the default port (8080)
-websocket-shell-service
+# the /usr/bin/wss-shell command is added
+# Start the server on the default port (8080)
+wss-shell
 
-# Install the service (Windows / Linux) with a custom port
-websocket-shell-service install --port 42069
+# Start the server with a custom port / ssl information
+Usage: wss-shell [options]
 
-# Remove the service from your machine
-websocket-shell-service uninstall
+Options:
+  --version   Show version number                                      [boolean]
+  --port      Port                                               [default: 8080]
+  --ssl       SSL by default. Use --no-ssl if unsecured wanted.  [default: true]
+  --ssl_key   filepath to ssl key                                [default: null]
+  --ssl_cert  filepath to ssl certificate                        [default: null]
+  -h, --help  Show help                                                [boolean]
+
 ```
 
 ## How it works:
 
 - Sets up a websocket server bound to [localhost:8080](http://localhost:8080)
 - Pipes incoming websocket connections to shells using [node-pty](https://github.com/Microsoft/node-pty)
-
-If you'd like to have your service accessible to the internet, put it behind [Nginx with Basic Auth](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/). You'll also want to make sure to [proxy websocket connections](https://www.nginx.com/blog/websocket-nginx/).
-
-Check out `example.html` on how to render a Terminal in your browser using a websocket and [xtermjs](https://xtermjs.org/).
