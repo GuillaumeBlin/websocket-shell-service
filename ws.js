@@ -4,7 +4,7 @@ const WebSocket = require('ws')
 const os = require('os')
 const pty = require('node-pty')
 
-const DEFAULT_SHELL = '/bin/bash'
+const DEFAULT_SHELL = 'bash'
 
 module.exports =
 
@@ -22,11 +22,11 @@ class WebsocketShellServer {
       })
 
       ptyProcess.on('data', (data) => {
-        connection.send(data)
+        connection.send(data.replace('\n','\r\n')
       })
 
       connection.on('message', (message) => {
-        ptyProcess.write(message)
+        ptyProcess.write(message.replace('\r','\n')
       })
 
       ptyProcess.once('close', () => {
