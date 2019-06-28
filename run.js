@@ -4,7 +4,7 @@ const http = require('http')
 
 const WebsocketShellServer = require('./ws')
 
-module.exports = function( port, ssl, ssl_key, ssl_cert) {
+module.exports = function( port, ssl, ssl_key, ssl_cert, script) {
  var server = http.createServer()
   if(ssl){
     server = https.createServer({
@@ -13,10 +13,10 @@ module.exports = function( port, ssl, ssl_key, ssl_cert) {
     })
  }
   const shellServer = new WebsocketShellServer({
-    server
+    script, server
   })
 
-  server.listen(port, 'localhost')
+  server.listen(port)
 
   console.log('Running service on port', port)
 

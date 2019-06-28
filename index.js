@@ -23,4 +23,4 @@ var argv = yargs
         .alias('h', 'help')
         .argv;
 
-require('./run')(argv.port, argv.ssl, argv.ssl_key, argv.ssl_cert)
+require('./run')(argv.port, argv.ssl, argv.ssl_key, argv.ssl_cert, argv.entry)
