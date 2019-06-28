@@ -7,6 +7,10 @@ var argv = yargs
 	    default: 8080,
 	    description : 'Port'
 	})
+	.option('entry',{
+	    default: "/bin/bash",
+	    description : 'Entrypoint script to be launched'
+	})
 	.option('ssl', {
             default: true,
             description: 'SSL by default. Use --no-ssl if unsecured wanted.'
