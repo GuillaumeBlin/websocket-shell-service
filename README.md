@@ -1,5 +1,6 @@
 # secured-websocket-shell
-standalone and secured version of websocket-shell-service project
+Standalone and secured version of **websocket-shell-service** project
+
 Create an SSH-like server which lets clients open shells through websockets
 
 ```
