@@ -4,7 +4,7 @@ const WebSocket = require('ws')
 const os = require('os')
 const pty = require('node-pty')
 
-const DEFAULT_SHELL = os.platform() === 'win32' ? 'cmd.exe' : 'login'
+const DEFAULT_SHELL = '/bin/bash'
 
 module.exports =
 
